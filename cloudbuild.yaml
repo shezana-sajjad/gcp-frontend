@@ -1,0 +1,15 @@
+steps:
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: 'sh'
+  args:
+  - '-c'
+  - |
+    echo "Uploading updated files to Cloud Storage without deleting existing files..."
+    gsutil -m rsync -r . gs://shezana.online
+    echo "Invalidating Cloud CDN cache..."
+    gcloud compute url-maps invalidate-cdn-cache crclb --path "/*"
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+
+timeout: '900s'
